@@ -203,6 +203,7 @@ function actualizarHistorial(){
     div.innerHTML=`[${a.fecha}] ${a.tipo.toUpperCase()} - Monto: ${a.monto} - Resultado: ${a.resultado}`;
     box.appendChild(div);
   });
+  box.scrollTop = box.scrollHeight;
 }
 
 // ================= WALLET =================
@@ -235,7 +236,6 @@ function validarDeposito(){
   usuarios[activo].depositos.push({monto:amount, hash:hash, estado:"pendiente", fecha:new Date().toLocaleString()});
   guardarUsuarios(usuarios);
 
-  // Enviar correo
   let network = depositNetwork.value;
   let address = network==="BEP20"? WALLET_BEP20 : WALLET_TRON;
   let body = `Hola, he realizado un depósito en mi cuenta de ${amount} USDT.\nHash: ${hash}\nRed: ${network}\nDirección: ${address}`;
@@ -297,7 +297,6 @@ function jugar(tipo){
       actualizarSaldo();
       resultado.innerHTML = msg;
 
-      // Guardar historial de apuestas
       usuarios[activo].apuestas.push({fecha:new Date().toLocaleString(), tipo, monto, resultado:gana?"Ganado":"Perdido"});
       guardarUsuarios(usuarios);
       actualizarHistorial();
