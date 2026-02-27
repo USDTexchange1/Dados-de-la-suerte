@@ -3,132 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dice Bet Platform con Depósito y Retiro</title>
-
+<title>Dice Bet Platform Mejorada</title>
 <style>
-body{
-  margin:0;
-  font-family: Arial, sans-serif;
-  background:#0f0f0f;
-  color:#fff;
-}
-
-.screen{
-  display:none;
-  padding:20px;
-}
-
-.active{
-  display:block;
-}
-
-.header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  background:#1a1a1a;
-  padding:10px 15px;
-  border-bottom:1px solid #333;
-}
-
-.balance{
-  font-weight:bold;
-  display:flex;
-  align-items:center;
-}
-
-.add-btn{
-  background:#2ecc71;
-  border:none;
-  border-radius:50%;
-  width:28px;
-  height:28px;
-  font-weight:bold;
-  cursor:pointer;
-  margin-left:10px;
-}
-
-.card{
-  background:#1c1c1c;
-  padding:20px;
-  border-radius:12px;
-  margin-top:20px;
-}
-
-input, select{
-  width:100%;
-  padding:10px;
-  margin:8px 0;
-  border:none;
-  border-radius:8px;
-  text-align:center;
-}
-
-button{
-  padding:10px;
-  border:none;
-  border-radius:8px;
-  margin:5px 0;
-  width:100%;
-  font-weight:bold;
-  cursor:pointer;
-}
-
+body{margin:0;font-family:Arial,sans-serif;background:#0f0f0f;color:#fff;}
+.screen{display:none;padding:20px;}
+.active{display:block;}
+.header{display:flex;justify-content:space-between;align-items:center;background:#1a1a1a;padding:10px 15px;border-bottom:1px solid #333;}
+.balance{font-weight:bold;display:flex;align-items:center;}
+.add-btn{background:#2ecc71;border:none;border-radius:50%;width:28px;height:28px;font-weight:bold;cursor:pointer;margin-left:10px;}
+.card{background:#1c1c1c;padding:20px;border-radius:12px;margin-top:20px;}
+input,select{width:100%;padding:10px;margin:8px 0;border:none;border-radius:8px;text-align:center;}
+button{padding:10px;border:none;border-radius:8px;margin:5px 0;width:100%;font-weight:bold;cursor:pointer;}
 .mayor{background:#2ecc71;}
 .menor{background:#e74c3c;}
 .igual{background:#f1c40f;}
-
-#resultado{
-  margin-top:15px;
-  text-align:center;
-}
-
-.wallet-box{
-  background:#111;
-  padding:10px;
-  border-radius:8px;
-  margin-top:10px;
-  word-break:break-all;
-}
-
-#depositPanel, #codePanel{
-  margin-top:15px;
-}
-
-/* MODAL WALLET Y RETIRO */
-.modal{
-  display:none;
-  position:fixed;
-  top:0; left:0;
-  width:100%; height:100%;
-  background:rgba(0,0,0,0.8);
-  justify-content:center;
-  align-items:center;
-  z-index:100;
-}
-
-.modal-content{
-  background:#1c1c1c;
-  padding:20px;
-  border-radius:12px;
-  width:90%;
-  max-width:400px;
-  text-align:center;
-}
-
-.modal-content h3{
-  margin-top:0;
-}
-
-.close-btn{
-  background:#e74c3c;
-  color:#fff;
-  border:none;
-  border-radius:8px;
-  padding:5px 10px;
-  cursor:pointer;
-  margin-top:10px;
-}
+#resultado{margin-top:15px;text-align:center;}
+.wallet-box{background:#111;padding:10px;border-radius:8px;margin-top:10px;word-break:break-all;}
+#depositPanel,#codePanel,#promoPanel,#historialPanel{margin-top:15px;}
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);justify-content:center;align-items:center;z-index:100;}
+.modal-content{background:#1c1c1c;padding:20px;border-radius:12px;width:90%;max-width:400px;text-align:center;}
+.modal-content h3{margin-top:0;}
+.close-btn{background:#e74c3c;color:#fff;border:none;border-radius:8px;padding:5px 10px;cursor:pointer;margin-top:10px;}
+.dado{width:50px;height:50px;margin:0 10px;display:inline-block;background:#fff;color:#000;font-size:24px;font-weight:bold;border-radius:8px;line-height:50px;}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#2c3e50;color:#fff;padding:10px 20px;border-radius:8px;opacity:0;transition:opacity 0.5s;}
+.historial-box{background:#111;padding:10px;border-radius:8px;margin-top:10px;max-height:150px;overflow-y:auto;}
 </style>
 </head>
 <body>
@@ -146,7 +44,6 @@ button{
 
 <!-- JUEGO -->
 <div id="gameScreen" class="screen">
-
   <div class="header">
     <div class="balance">
       <span id="saldoHeader">Saldo: 0 USDT</span>
@@ -156,12 +53,16 @@ button{
 
   <div class="card">
     <h3>Realizar apuesta</h3>
-    <input type="number" id="montoApuesta" placeholder="Monto en USDT">
-
-    <button class="mayor" onclick="jugar('mayor')">Mayor x3.2</button>
-    <button class="menor" onclick="jugar('menor')">Menor x3.2</button>
-    <button class="igual" onclick="jugar('igual')">Igual x5.2</button>
-
+    <input type="number" id="montoApuesta" placeholder="Monto en USDT (≥0.30)">
+    <div>
+      <button class="mayor" onclick="jugar('mayor')">Mayor x3.2</button>
+      <button class="menor" onclick="jugar('menor')">Menor x3.2</button>
+      <button class="igual" onclick="jugar('igual')">Igual x5.2</button>
+    </div>
+    <div style="margin-top:10px;">
+      <div id="dado1" class="dado">-</div>
+      <div id="dado2" class="dado">-</div>
+    </div>
     <div id="resultado"></div>
 
     <button onclick="mostrarDeposito()">Depositar</button>
@@ -172,7 +73,16 @@ button{
   <!-- PANEL DE DEPÓSITO -->
   <div id="depositPanel" class="card" style="display:none;">
     <h3>Depósito USDT</h3>
-    <input type="number" id="depositAmount" placeholder="Monto a depositar (3-630)" min="3" max="630">
+    <input type="number" id="depositAmount" placeholder="Monto a depositar (≥3)" min="3">
+    <div>
+      <label>Selecciona red:</label>
+      <select id="depositNetwork">
+        <option value="BEP20">USDT BEP20</option>
+        <option value="TRON">USDT TRON</option>
+      </select>
+    </div>
+    <div id="depositAddress" class="wallet-box"></div>
+    <button onclick="copiarDireccion()">Copiar dirección</button>
     <input type="text" id="depositHash" placeholder="Hash de transacción">
     <button onclick="validarDeposito()">Validar pago</button>
   </div>
@@ -180,9 +90,15 @@ button{
   <!-- PANEL DE CÓDIGO -->
   <div id="codePanel" class="card" style="display:none;">
     <h3>Introduce código de activación</h3>
-    <input type="text" id="activationCode" maxlength="4" placeholder="Código 4 dígitos">
+    <input type="text" id="activationCode" maxlength="6" placeholder="Código (ej: ALE000)">
     <button onclick="usarCodigo()">Activar depósito</button>
     <div id="codeResult"></div>
+  </div>
+
+  <!-- HISTORIAL DE APUESTAS -->
+  <div id="historialPanel" class="card">
+    <h3>Historial de Apuestas</h3>
+    <div id="historialBox" class="historial-box"></div>
   </div>
 
 </div>
@@ -201,46 +117,47 @@ button{
 <div id="withdrawModal" class="modal">
   <div class="modal-content">
     <h3>Retirar USDT</h3>
-
     <select id="withdrawNetwork">
       <option value="BEP20">USDT BEP20</option>
       <option value="TRON">USDT TRON</option>
     </select>
-
-    <input type="number" id="withdrawAmount" placeholder="Monto a retirar (mín 7)">
+    <input type="number" id="withdrawAmount" placeholder="Monto a retirar (mín 10)">
     <input type="text" id="withdrawAddress" placeholder="Dirección destino">
-
     <button onclick="procesarRetiro()">Confirmar retiro</button>
     <button class="close-btn" onclick="cerrarRetiro()">Cancelar</button>
   </div>
 </div>
 
+<div id="toast" class="toast"></div>
+
 <script>
 // ================= CONFIG =================
 const WALLET_BEP20 = "0x3670a0bFfb8b8A6D42177807F8dFd369A3995b9e";
 const WALLET_TRON  = "TJvpGB5oUdyFRPg6YrdwLt8SWgNo6GoKwx";
-
-// 30 códigos de activación
-let activationCodes = [
-  "1001","1002","1003","1004","1005","1006","1007","1008","1009","1010",
-  "1011","1012","1013","1014","1015","1016","1017","1018","1019","1020",
-  "1021","1022","1023","1024","1025","1026","1027","1028","1029","1030"
-];
+const PROMO_CODES = { "ALE000":5, "WELCOME":3 };
 
 // ================= STORAGE =================
 function obtenerUsuarios(){ return JSON.parse(localStorage.getItem("usuarios")) || {}; }
 function guardarUsuarios(data){ localStorage.setItem("usuarios", JSON.stringify(data)); }
 
+// ================= TOAST =================
+function mostrarToast(msg){
+  const t = document.getElementById("toast");
+  t.innerText = msg;
+  t.style.opacity="1";
+  setTimeout(()=>{ t.style.opacity="0"; },3000);
+}
+
 // ================= REGISTRO =================
 function registrar(){
   let user = usuario.value.trim();
   let pass = password.value.trim();
-  if(!user || !pass){ alert("Completa los datos"); return; }
+  if(!user || !pass){ mostrarToast("Completa los datos"); return; }
   let usuarios = obtenerUsuarios();
-  if(usuarios[user]){ alert("El usuario ya existe"); return; }
-  usuarios[user] = { password: pass, saldo: 100, depositos: [] };
+  if(usuarios[user]){ mostrarToast("El usuario ya existe"); return; }
+  usuarios[user] = { password: pass, saldo: 0, depositos: [], apuestas: [] };
   guardarUsuarios(usuarios);
-  alert("Registro exitoso");
+  mostrarToast("Registro exitoso");
 }
 
 // ================= LOGIN =================
@@ -248,14 +165,11 @@ function login(){
   let user = usuario.value.trim();
   let pass = password.value.trim();
   let usuarios = obtenerUsuarios();
-
   if(user==="alejandromedina135@gmail.com" && pass==="ale1234"){
-    if(!usuarios[user]){ usuarios[user] = { password: pass, saldo:120.47, depositos:[] }; guardarUsuarios(usuarios); }
+    if(!usuarios[user]){ usuarios[user] = { password: pass, saldo:120.47, depositos:[], apuestas:[] }; guardarUsuarios(usuarios); }
     localStorage.setItem("usuarioActivo", user); cargarJuego(); return;
   }
-
-  if(!usuarios[user] || usuarios[user].password!==pass){ alert("Datos incorrectos"); return; }
-
+  if(!usuarios[user] || usuarios[user].password!==pass){ mostrarToast("Datos incorrectos"); return; }
   localStorage.setItem("usuarioActivo", user); cargarJuego();
 }
 
@@ -266,8 +180,8 @@ function cargarJuego(){
   depositPanel.style.display="none";
   codePanel.style.display="none";
   actualizarSaldo();
+  actualizarHistorial();
 }
-
 function logout(){ localStorage.removeItem("usuarioActivo"); location.reload(); }
 
 // ================= SALDO =================
@@ -277,122 +191,138 @@ function actualizarSaldo(){
   saldoHeader.innerText = "Saldo: "+usuarios[activo].saldo.toFixed(2)+" USDT";
 }
 
-// ================= WALLET MODAL =================
+// ================= HISTORIAL =================
+function actualizarHistorial(){
+  let usuarios = obtenerUsuarios();
+  let activo = localStorage.getItem("usuarioActivo");
+  let box = document.getElementById("historialBox");
+  box.innerHTML="";
+  if(!usuarios[activo].apuestas) usuarios[activo].apuestas=[];
+  usuarios[activo].apuestas.slice().reverse().forEach(a=>{
+    const div = document.createElement("div");
+    div.innerHTML=`[${a.fecha}] ${a.tipo.toUpperCase()} - Monto: ${a.monto} - Resultado: ${a.resultado}`;
+    box.appendChild(div);
+  });
+}
+
+// ================= WALLET =================
 function abrirWallet(){ walletModal.style.display="flex"; }
 function cerrarWallet(){ walletModal.style.display="none"; }
 
-// ================= DEPÓSITO =================
-function mostrarDeposito(){ depositPanel.style.display="block"; }
-
+// ================= DEPOSIT =================
+function mostrarDeposito(){
+  depositPanel.style.display="block";
+  actualizarDireccion();
+}
+function actualizarDireccion(){
+  let network = depositNetwork.value;
+  depositAddress.innerText = network==="BEP20"? WALLET_BEP20 : WALLET_TRON;
+}
+depositNetwork.addEventListener("change", actualizarDireccion);
+function copiarDireccion(){
+  try{
+    navigator.clipboard.writeText(depositAddress.innerText);
+    mostrarToast("Dirección copiada al portapapeles");
+  } catch(e){ alert("Error al copiar"); }
+}
 function validarDeposito(){
   let amount = parseFloat(depositAmount.value);
-  let hash   = depositHash.value.trim();
-  if(!amount || amount<3 || amount>630){ alert("Monto inválido (3-630 USDT)"); return; }
-  if(!hash){ alert("Debes ingresar el hash"); return; }
-
+  if(isNaN(amount) || amount<3){ mostrarToast("Monto mínimo 3 USDT"); return; }
+  let hash = depositHash.value.trim();
+  if(!hash){ mostrarToast("Ingresa hash"); return; }
   let usuarios = obtenerUsuarios();
   let activo = localStorage.getItem("usuarioActivo");
-  usuarios[activo].depositos.push({monto:amount, hash:hash, estado:"pendiente"});
+  usuarios[activo].depositos.push({monto:amount, hash:hash, estado:"pendiente", fecha:new Date().toLocaleString()});
   guardarUsuarios(usuarios);
 
-  let body = `Hola, he realizado un depósito en mi cuenta de ${amount} USDT.\nHash: ${hash}\nUSDT BEP20: ${WALLET_BEP20}\nUSDT TRON: ${WALLET_TRON}`;
-  window.location.href = `mailto:reffgame.oficial@gmail.com?subject=Depósito USDT&body=${encodeURIComponent(body)}`;
+  // Enviar correo
+  let network = depositNetwork.value;
+  let address = network==="BEP20"? WALLET_BEP20 : WALLET_TRON;
+  let body = `Hola, he realizado un depósito en mi cuenta de ${amount} USDT.\nHash: ${hash}\nRed: ${network}\nDirección: ${address}`;
+  window.location.href=`mailto:reffgame.oficial@gmail.com?subject=Depósito USDT&body=${encodeURIComponent(body)}`;
 
   depositPanel.style.display="none";
   codePanel.style.display="block";
-  alert("Se ha enviado el correo. Ingresa el código de activación recibido.");
+  mostrarToast("Correo enviado. Ingresa código de activación recibido.");
 }
 
-// ================= ACTIVACIÓN =================
+// ================= CÓDIGOS PROMOCIONALES =================
 function usarCodigo(){
-  let code = activationCode.value.trim();
-  if(!code){ alert("Ingresa un código"); return; }
-
-  let usedCodes = JSON.parse(localStorage.getItem("usedCodes")) || [];
-  if(!activationCodes.includes(code)){ codeResult.innerText="Código inválido"; return; }
-  if(usedCodes.includes(code)){ codeResult.innerText="Código ya usado"; return; }
-
+  let code = activationCode.value.trim().toUpperCase();
+  if(!code){ mostrarToast("Ingresa código"); return; }
   let usuarios = obtenerUsuarios();
   let activo = localStorage.getItem("usuarioActivo");
-  let ultimoDep = usuarios[activo].depositos.reverse().find(d=>d.estado==="pendiente");
-  if(!ultimoDep){ codeResult.innerText="No hay depósito pendiente"; return; }
-
-  usuarios[activo].saldo += ultimoDep.monto;
-  ultimoDep.estado = "completado";
-  guardarUsuarios(usuarios);
-
-  usedCodes.push(code);
-  localStorage.setItem("usedCodes", JSON.stringify(usedCodes));
-
-  codeResult.innerText = `Depósito de ${ultimoDep.monto} USDT activado ✅`;
-  codePanel.style.display="none";
-  actualizarSaldo();
+  let ultimoDep = [...usuarios[activo].depositos].reverse().find(d=>d.estado==="pendiente");
+  if(!ultimoDep){ mostrarToast("No hay depósito pendiente"); return; }
+  if(!PROMO_CODES[code]){ codeResult.innerText="Código inválido"; return; }
+  if(ultimoDep.monto>=3){
+    usuarios[activo].saldo += PROMO_CODES[code] + ultimoDep.monto;
+    ultimoDep.estado="completado";
+    guardarUsuarios(usuarios);
+    actualizarSaldo();
+    codeResult.innerText = `Depósito + promoción activada. Ganaste ${PROMO_CODES[code]} USDT ✅`;
+    codePanel.style.display="none";
+    actualizarHistorial();
+  } else { mostrarToast("Debes depositar al menos 3 USDT para usar el código"); }
 }
 
 // ================= JUEGO =================
 function jugar(tipo){
   let monto = parseFloat(montoApuesta.value);
+  if(isNaN(monto) || monto<0.3){ mostrarToast("Apuesta mínima 0.30 USDT"); return; }
   let usuarios = obtenerUsuarios();
   let activo = localStorage.getItem("usuarioActivo");
+  if(monto>usuarios[activo].saldo){ mostrarToast("Saldo insuficiente"); return; }
 
-  if(!monto || monto<=0){ alert("Monto inválido"); return; }
-  if(monto>usuarios[activo].saldo){ alert("Saldo insuficiente"); return; }
+  let dado1Elem = document.getElementById("dado1");
+  let dado2Elem = document.getElementById("dado2");
+  let animCount = 0;
+  let anim = setInterval(()=>{
+    dado1Elem.innerText=Math.floor(Math.random()*6)+1;
+    dado2Elem.innerText=Math.floor(Math.random()*6)+1;
+    animCount++;
+    if(animCount>=25){
+      clearInterval(anim);
+      let d1 = parseInt(dado1Elem.innerText);
+      let d2 = parseInt(dado2Elem.innerText);
+      let gana=false;
+      if(tipo==="mayor" && d1>=4 && d2>=4) gana=true;
+      if(tipo==="menor" && d1<=3 && d2<=3) gana=true;
+      if(tipo==="igual" && d1===d2) gana=true;
+      let mult = (tipo==="igual")?5.2:3.2;
+      let msg = `Dados: ${d1} y ${d2}<br>`;
+      if(gana){ let ganancia=monto*mult; usuarios[activo].saldo+=ganancia; msg+="🎉 Ganaste "+ganancia.toFixed(2)+" USDT"; }
+      else{ usuarios[activo].saldo-=monto; msg+="❌ Perdiste "+monto.toFixed(2)+" USDT"; }
+      guardarUsuarios(usuarios);
+      actualizarSaldo();
+      resultado.innerHTML = msg;
 
-  let d1=Math.floor(Math.random()*6)+1;
-  let d2=Math.floor(Math.random()*6)+1;
-  let gana=false;
-  if(tipo==="mayor" && d1>=4 && d2>=4) gana=true;
-  if(tipo==="menor" && d1<=3 && d2<=3) gana=true;
-  if(tipo==="igual" && d1===d2) gana=true;
-  let mult = (tipo==="igual") ? 5.2 : 3.2;
-  let msg=`Dados: ${d1} y ${d2}<br>`;
-  if(gana){ let ganancia=monto*mult; usuarios[activo].saldo+=ganancia; msg+="🎉 Ganaste "+ganancia.toFixed(2)+" USDT"; }
-  else{ usuarios[activo].saldo-=monto; msg+="❌ Perdiste "+monto.toFixed(2)+" USDT"; }
-  guardarUsuarios(usuarios);
-  actualizarSaldo();
-  resultado.innerHTML = msg;
+      // Guardar historial de apuestas
+      usuarios[activo].apuestas.push({fecha:new Date().toLocaleString(), tipo, monto, resultado:gana?"Ganado":"Perdido"});
+      guardarUsuarios(usuarios);
+      actualizarHistorial();
+    }
+  },200);
 }
 
 // ================= RETIRO =================
 function abrirRetiro(){ withdrawModal.style.display="flex"; }
 function cerrarRetiro(){ withdrawModal.style.display="none"; }
-
 function procesarRetiro(){
   let network = withdrawNetwork.value;
   let amount = parseFloat(withdrawAmount.value);
   let address = withdrawAddress.value.trim();
-
   let usuarios = obtenerUsuarios();
   let activo = localStorage.getItem("usuarioActivo");
-
-  if(!amount || amount < 7){
-    alert("Monto mínimo de retiro: 7 USDT");
-    return;
-  }
-
-  if(amount > usuarios[activo].saldo){
-    alert("Saldo insuficiente");
-    return;
-  }
-
-  if(!address){
-    alert("Debes ingresar una dirección destino");
-    return;
-  }
-
+  if(isNaN(amount) || amount<10){ mostrarToast("Monto mínimo 10 USDT"); return; }
+  if(amount>usuarios[activo].saldo){ mostrarToast("Saldo insuficiente"); return; }
+  if(!address){ mostrarToast("Debes ingresar dirección destino"); return; }
   usuarios[activo].saldo -= amount;
   guardarUsuarios(usuarios);
   actualizarSaldo();
-
-  let body = `Solicitud de retiro:
-Usuario: ${activo}
-Red: ${network}
-Monto: ${amount} USDT
-Dirección destino: ${address}`;
-
-  window.location.href = `mailto:reffgame.oficial@gmail.com?subject=Solicitud de Retiro&body=${encodeURIComponent(body)}`;
-
-  alert("Solicitud enviada correctamente.");
+  let body = `Solicitud de retiro:\nUsuario: ${activo}\nRed: ${network}\nMonto: ${amount} USDT\nDirección destino: ${address}`;
+  window.location.href=`mailto:reffgame.oficial@gmail.com?subject=Solicitud de Retiro&body=${encodeURIComponent(body)}`;
+  mostrarToast("Solicitud enviada correctamente");
   cerrarRetiro();
 }
 
@@ -400,6 +330,5 @@ Dirección destino: ${address}`;
 if(localStorage.getItem("usuarioActivo")){ cargarJuego(); }
 
 </script>
-
 </body>
-</html>
+  </html>
